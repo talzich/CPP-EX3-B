@@ -5,31 +5,37 @@
 
 #include <iostream>
 #include <fstream>
+#include <map>
 
 #include "NumberWithUnits.hpp"
+#include "Graph.hpp"
 
 using namespace std;
+using namespace zich;
 
-namespace ariel{
-
-    const string UNIT_FILE_PATH = "units.txt";
+const string UNIT_FILE_PATH = "units.txt";
+namespace ariel{    
 
     NumberWithUnits::NumberWithUnits(double num, string unit){
+
+        zich::Graph g{};
         
     }
 
     void NumberWithUnits::read_units(std::ifstream &u_file){
         
-        // Opening file
-        u_file.open(UNIT_FILE_PATH);
-        if(!u_file){
-            cerr << "Unable to open file " << UNIT_FILE_PATH <<endl;
-            exit(1);
+        if (!u_file.is_open()){
+            // Opening file
+            u_file.open(UNIT_FILE_PATH);
+            if(!u_file){
+                cerr << "Unable to open file " << UNIT_FILE_PATH <<endl;
+                exit(1);
+            }
         }
 
         char c = ' ';
         while(u_file >> c){
-            cout << c << endl;
+            
         }
 
         u_file.close();
@@ -126,7 +132,7 @@ namespace ariel{
 
 int main(void){
     ariel::NumberWithUnits n{1, "km"};
-    ifstream u_file;
+    ifstream u_file(UNIT_FILE_PATH);
     n.read_units(u_file);
     return 0;
 }
