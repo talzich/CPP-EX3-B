@@ -34,3 +34,9 @@ solution*
 *.app
 demo
 test
+
+# Visual Studio Properties
+.vscode
+
+# MacOS Files 
+.DS_STORE
