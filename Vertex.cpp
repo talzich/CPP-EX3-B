@@ -1,8 +1,6 @@
 //
 // AUTHOR: Tal Zichlinsky
-// This file will be used to build the Vertex class. This class will be implementing the Observer design pattern
-// such that every vertex will be notified when one of its children (neighbors on outgoing edges) has a new outgoing edge.
-// Thus, for each dimension in the units.txt file we would have a complete sub-graph in the entire graph representing the units file
+// This file will be used to build the Vertex class.
 
 #include <map>
 #include <string>
