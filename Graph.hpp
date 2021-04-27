@@ -10,14 +10,11 @@ namespace zich{
     
     class Graph{
 
-        std::map<std::string, Vertex> vertices{};
-
+        std::map<std::string, map<string, double> > adj{};
+        
         public:
             // Constructors
             Graph();
-            Graph(int size);
-
-            // Destructor
             ~Graph();
 
             int add_vertex(std::string v);
