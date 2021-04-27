@@ -34,8 +34,11 @@ namespace ariel{
         }
 
         char c = ' ';
-        while(u_file >> c){
-            
+        string str = "";
+        while(getline(u_file, str)){
+            for(char c : str){
+                
+            }
         }
 
         u_file.close();
