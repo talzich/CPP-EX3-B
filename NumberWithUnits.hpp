@@ -2,6 +2,10 @@
 // AUTHOR: Tal Zichlinsky
 // Header file for class NumberWithUnits
 
+#include <string>
+
+#include "Graph.hpp"
+
 namespace ariel{
 
     class NumberWithUnits{
