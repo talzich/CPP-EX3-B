@@ -20,30 +20,7 @@ namespace zich{
         map<string, double> outs{};
         map<string, double> ins{};
 
-        vector<Vertex> observers;
         string key;
-        
-        // Updates each observer's outs and ins maps according with the new unit
-        void update_observers(Vertex nei, double weight){
-            
-            string new_key = nei.get_key();
-            if(new_key == this->key) return;
-            
-            for(Vertex v : observers){
-                if(new_key == v.key) continue; 
-
-                if(!v.outs.count(new_key)){
-                    v.outs[new_key] = v.outs.at(this->key)*weight;
-                }
-
-                if(!v.ins.count(new_key)){
-                    v.ins[new_key] = 1/v.outs.at(this->key);
-                }
-
-                v.observers.push_back(nei);
-                nei.observers.push_back(v);
-            }
-        }
 
         public:
             Vertex(string new_key){
@@ -60,14 +37,11 @@ namespace zich{
             int add_nei(Vertex nei, double weight){
                 outs[nei.get_key()] = weight;
                 ins[nei.get_key()] = 1/weight;
-                update_observers(nei, weight);
-                nei.update_observers(nei, 1/weight);
-                observers.push_back(nei);
-                nei.observers.push_back(*this);
             }
-            
-            
-            // int add_nei_in();
-            int remove_nei(string key);
+
+            int remove_nei(string key){
+                outs.erase(key);
+                ins.erase(key);
+            }
     };
 }
