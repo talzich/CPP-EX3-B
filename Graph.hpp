@@ -4,6 +4,8 @@
 
 #include <map>
 
+#include "vertex.hpp"
+
 namespace zich{
     
     class Graph{
