@@ -4,13 +4,13 @@
 
 #include <map>
 
-#include "vertex.hpp"
+#include "Vertex.hpp"
 
 namespace zich{
     
     class Graph{
 
-        std::map<std::string, std::map<std::string, double> > adj_matrix{};
+        std::map<std::string, Vertex> vertices{};
 
         public:
             // Constructors
@@ -29,7 +29,5 @@ namespace zich{
             int remove_edge(std::string src, std::string dst);
 
             int get_size();
-
-            int get_edge_size();
     };
 }
