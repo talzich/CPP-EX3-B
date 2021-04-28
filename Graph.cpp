@@ -15,8 +15,6 @@ using namespace std;
 
 namespace zich{
 
-    // std::map<std::string, std::map<std::string, double> > adj{};
-
     Graph::Graph(){}
 
     Graph::~Graph(){}
@@ -44,5 +42,17 @@ namespace zich{
             adj[key1][nei.first] = tmp;
             adj[nei.first][key1] = 1/tmp;
         }
+    }
+
+    bool Graph::is_connected(string key1, string key2){
+        return (adj.at(key1).count(key2) == 1);
+    }
+
+    double Graph::get_weight(string key1, string key2){
+        if(!is_connected(key1, key2)){
+            throw("Units not on the same dimension");
+        }
+
+        return(adj.at(key1).at(key2));
     }
 }

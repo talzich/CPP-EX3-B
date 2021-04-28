@@ -28,5 +28,9 @@ namespace zich{
             bool has_vertex(std::string key);
 
             void notify(std::string key1, std::string key2);
+
+            bool is_connected(std::string key1, std::string key2);
+
+            double get_weight(std::string key1, std::string key2);
     };
 }

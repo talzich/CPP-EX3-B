@@ -24,13 +24,19 @@ namespace ariel{
 
     NumberWithUnits convert(NumberWithUnits num, string dst_unit){
         
-        return num;
+        // We need to check if units are connected on the graph
+        if(!g.is_connected(num.get_unit(), dst_unit)){
+            throw("Units not on the same dimension");
+        }
+        
+        NumberWithUnits *converted;
+        converted = new NumberWithUnits(num.get_number()*g.get_weight(num.get_unit(), dst_unit), dst_unit);
+        return *converted;
     }
 
     NumberWithUnits::NumberWithUnits(double num, string unit){
 
         if(!read_flag) throw("Units file not read yet");
-        //if(num <= 0) __throw_invalid_argument("Number provided non-positive");
         if(!g.has_vertex(unit))  __throw_invalid_argument("Unit provided not acceptable");
     }
 
