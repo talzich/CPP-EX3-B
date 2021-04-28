@@ -7,6 +7,7 @@
 #include <fstream>
 #include <sstream>
 #include <map>
+#include <cmath>
 
 #include "NumberWithUnits.hpp"
 #include "Graph.cpp"
@@ -16,6 +17,7 @@ using namespace zich;
 
 const string UNIT_FILE_PATH = "units.txt";
 const int START = 0;
+const double EPS = 0.00001;
 
 namespace ariel{
 
@@ -37,7 +39,10 @@ namespace ariel{
     NumberWithUnits::NumberWithUnits(double num, string unit){
 
         if(!read_flag) throw("Units file not read yet");
-        if(!g.has_vertex(unit))  __throw_invalid_argument("Unit provided not acceptable");
+        if(!g.has_vertex(unit))  throw("Unit provided not acceptable");
+
+        this->number = num;
+        this->unit = unit;
     }
 
     double NumberWithUnits::get_number(){
@@ -104,9 +109,10 @@ namespace ariel{
     NumberWithUnits NumberWithUnits::operator+(NumberWithUnits num){
         if(this->unit != num.unit){
             NumberWithUnits converted = convert(num, this->unit);
+            return NumberWithUnits{this->get_number()+converted.get_number(), this->get_unit()};
         }
-
-        return num;
+        return NumberWithUnits{num.get_number() + this->get_number(), this->get_unit()};
+        
     }
     NumberWithUnits NumberWithUnits::operator+=(NumberWithUnits num){
         return *this;
@@ -117,10 +123,17 @@ namespace ariel{
     //-----------------------------
 
     bool operator!=(NumberWithUnits num1, NumberWithUnits num2){
-        return false;
+        return !(num1 == num2);
     }
     bool operator==(NumberWithUnits num1, NumberWithUnits num2){
-        return false;
+        if(num1.get_unit() != num2.get_unit()){
+            NumberWithUnits converted = convert(num2, num1.get_unit());
+            double diff = abs(converted.get_number() - num1.get_number());
+            return (diff < EPS);
+        }
+
+        double diff = abs(num2.get_number() - num1.get_number());
+        return (diff < EPS);
     }
 
     bool operator<=(NumberWithUnits num1, NumberWithUnits num2){
@@ -171,6 +184,7 @@ namespace ariel{
     // I/O Operators
     //-----------------------------
     ostream& operator<<(ostream &out, NumberWithUnits num){
+        out << num.get_number() << '[' << num.get_unit() << ']';
         return out;
     }
     istream& operator>>(istream &in, NumberWithUnits num){
@@ -179,9 +193,9 @@ namespace ariel{
 
 }
 
-int main(){
-    //ariel::NumberWithUnits n{1, "km"};
-    ifstream u_file(UNIT_FILE_PATH);
-    ariel::NumberWithUnits::read_units(u_file);
-    return 0;
-}
+// int main(){
+//     //ariel::NumberWithUnits n{1, "km"};
+//     ifstream u_file(UNIT_FILE_PATH);
+//     ariel::NumberWithUnits::read_units(u_file);
+//     return 0;
+// }
