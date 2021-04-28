@@ -97,9 +97,14 @@ namespace ariel{
     }
 
     NumberWithUnits NumberWithUnits::operator-(NumberWithUnits num){
-        return *this;
+        if(this->unit != num.unit){
+            NumberWithUnits converted = convert(num, this->unit);
+            return NumberWithUnits{this->get_number()-converted.get_number(), this->get_unit()};
+        }
+        return NumberWithUnits{this->get_number()-num.get_number(), this->get_unit()};
     }
     NumberWithUnits NumberWithUnits::operator-=(NumberWithUnits num){
+        *this = *this - num;
         return *this;
     }
 
@@ -112,9 +117,9 @@ namespace ariel{
             return NumberWithUnits{this->get_number()+converted.get_number(), this->get_unit()};
         }
         return NumberWithUnits{num.get_number() + this->get_number(), this->get_unit()};
-        
     }
     NumberWithUnits NumberWithUnits::operator+=(NumberWithUnits num){
+        *this = *this + num;
         return *this;
     }
 
