@@ -49,10 +49,10 @@ namespace ariel{
             // Increment Decrement Operators
             //-----------------------------
 
-            NumberWithUnits operator--();
+            NumberWithUnits& operator--();
             NumberWithUnits operator--(int dummy);
 
-            NumberWithUnits operator++();
+            NumberWithUnits& operator++();
             NumberWithUnits operator++(int dummy);
 
             //-----------------------------
@@ -66,7 +66,7 @@ namespace ariel{
                 // I/O Operators
                 //-----------------------------
             friend std::ostream& operator<<(std::ostream& out, NumberWithUnits num);
-            friend std::istream& operator>>(std::istream& in, NumberWithUnits num);
+            friend std::istream& operator>>(std::istream& in, NumberWithUnits& num);
     };
 
 }

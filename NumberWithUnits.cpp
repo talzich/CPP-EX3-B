@@ -175,28 +175,24 @@ namespace ariel{
     //-----------------------------
 
 
-    NumberWithUnits NumberWithUnits::operator--(){
-        this->number--;
+    NumberWithUnits &NumberWithUnits::operator--(){
+        --(this->number);
         return *this;
     }
     
     // Postfix
     NumberWithUnits NumberWithUnits::operator--(int dummy){
-        NumberWithUnits copy = *this;
-        this->number--;
-        return copy;
+        return NumberWithUnits((this->number)--, this->unit);
     }
 
-    NumberWithUnits NumberWithUnits::operator++(){
-        this->number++;
+    NumberWithUnits &NumberWithUnits::operator++(){
+        ++(this->number);
         return *this;
     }
 
     // Postfix
     NumberWithUnits NumberWithUnits::operator++(int dummy){
-        NumberWithUnits copy = *this;
-        this->number++;
-        return copy;
+        return NumberWithUnits((this->number)++, this->unit);
     }
 
     //-----------------------------
@@ -217,8 +213,8 @@ namespace ariel{
         out << num.get_number() << '[' << num.get_unit() << ']';
         return out;
     }
-}
-istream& ariel::operator>>(istream& is, NumberWithUnits A){
+
+    istream& operator>>(istream& is, NumberWithUnits& A){
         string unit;
         char temp1 = 0;
         char temp2 = 0;
@@ -243,10 +239,4 @@ istream& ariel::operator>>(istream& is, NumberWithUnits A){
 
         return is;
     }
-
-// int main(){
-//     //ariel::NumberWithUnits n{1, "km"};
-//     ifstream u_file(UNIT_FILE_PATH);
-//     ariel::NumberWithUnits::read_units(u_file);
-//     return 0;
-// }
+}
