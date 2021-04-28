@@ -32,9 +32,7 @@ namespace ariel{
             throw("Units not on the same dimension");
         }
         
-        NumberWithUnits *converted;
-        converted = new NumberWithUnits(num.get_number()*g.get_weight(num.get_unit(), dst_unit), dst_unit);
-        return *converted;
+        return NumberWithUnits{num.get_number()*g.get_weight(num.get_unit(), dst_unit), dst_unit};
     }
 
     NumberWithUnits::NumberWithUnits(double num, string unit){
