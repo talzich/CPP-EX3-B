@@ -29,20 +29,7 @@ namespace zich{
     }
 
     int Graph::add_edge(string src, string dst, double exc_rate){
-        
-        // if(adj[src][dst] != NULL){
-        //     if (adj[src][dst] != exc_rate) return;
-        // }
-
         adj[src][dst] = exc_rate;
-        
-        double tmp;
-        for(auto &nei : adj[src]){
-            tmp = adj[src][dst] * nei.second;
-            adj[src][nei.first] = tmp;
-            adj[nei.first][src] = 1/tmp;
-        }
-
         return 1;
     }
 
@@ -50,4 +37,12 @@ namespace zich{
         return (adj.count(key) == 1);
     }
     
+    void Graph::notify(string key1, string key2){
+        double tmp;
+        for(auto &nei : adj[key2]){
+            tmp = adj[key1][key2] * nei.second;
+            adj[key1][nei.first] = tmp;
+            adj[nei.first][key1] = 1/tmp;
+        }
+    }
 }

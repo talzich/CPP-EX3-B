@@ -67,6 +67,9 @@ namespace ariel{
             g.add_edge(u1, u2, rate2);
             g.add_edge(u2, u1, 1/rate2);
 
+            g.notify(u1, u2);
+            g.notify(u2, u1);
+
         }
 
         read_flag = true;
@@ -170,9 +173,9 @@ namespace ariel{
 
 }
 
-int main(void){
-    ariel::NumberWithUnits n{1, "km"};
+int main(){
+    //ariel::NumberWithUnits n{1, "km"};
     ifstream u_file(UNIT_FILE_PATH);
-    n.read_units(u_file);
+    ariel::NumberWithUnits::read_units(u_file);
     return 0;
 }
