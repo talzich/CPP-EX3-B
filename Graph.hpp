@@ -10,8 +10,8 @@ namespace zich{
     
     class Graph{
 
-        std::map<std::string, map<string, double> > adj{};
-        
+        std::map<std::string, std::map<std::string, double> > adj{};
+
         public:
             // Constructors
             Graph();

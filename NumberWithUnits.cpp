@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <map>
 
 #include "NumberWithUnits.hpp"
@@ -14,16 +15,19 @@ using namespace std;
 using namespace zich;
 
 const string UNIT_FILE_PATH = "units.txt";
-namespace ariel{    
+const int START = 0;
+
+namespace ariel{
+
+    zich::Graph g{};
 
     NumberWithUnits::NumberWithUnits(double num, string unit){
-
-        zich::Graph g{};
         
     }
 
-    void NumberWithUnits::read_units(std::ifstream &u_file){
+    void NumberWithUnits::read_units(ifstream &u_file){
         
+        // Open file, if not already open
         if (!u_file.is_open()){
             // Opening file
             u_file.open(UNIT_FILE_PATH);
@@ -33,13 +37,19 @@ namespace ariel{
             }
         }
 
-        char c = ' ';
+        string u1 = "", u2 = "", dummy = "=";
+        double rate1, rate2;
         string str = "";
         while(getline(u_file, str)){
-            for(char c : str){
-                
-            }
+            istringstream s_str(str);
+            s_str >> rate1 >> u1 >> dummy >> rate2 >> u2;
         }
+        
+        g.add_vertex(u1);
+        g.add_vertex(u2);
+
+        g.add_edge(u1, u2, rate2);
+        g.add_edge(u2, u1, 1/rate2);
 
         u_file.close();
 
@@ -121,6 +131,10 @@ namespace ariel{
         return num;
     }
 
+    NumberWithUnits operator*(NumberWithUnits num, double d){
+        return num;
+    }
+
     //-----------------------------
     // I/O Operators
     //-----------------------------
@@ -133,9 +147,9 @@ namespace ariel{
 
 }
 
-int main(void){
-    ariel::NumberWithUnits n{1, "km"};
-    ifstream u_file(UNIT_FILE_PATH);
-    n.read_units(u_file);
-    return 0;
-}
+// int main(void){
+//     ariel::NumberWithUnits n{1, "km"};
+//     ifstream u_file(UNIT_FILE_PATH);
+//     n.read_units(u_file);
+//     return 0;
+// }

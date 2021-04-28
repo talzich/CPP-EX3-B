@@ -58,6 +58,7 @@ namespace ariel{
             //-----------------------------
 
             friend NumberWithUnits operator*(double d, NumberWithUnits num);
+            friend NumberWithUnits operator*(NumberWithUnits num, double d);
             
                 //-----------------------------
                 // I/O Operators
