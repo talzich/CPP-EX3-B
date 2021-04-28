@@ -96,6 +96,8 @@ namespace ariel{
         if(this->unit != num.unit){
             NumberWithUnits converted = convert(num, this->unit);
         }
+
+        return num;
     }
     NumberWithUnits NumberWithUnits::operator+=(NumberWithUnits num){
         return *this;
@@ -168,9 +170,9 @@ namespace ariel{
 
 }
 
-// int main(void){
-//     ariel::NumberWithUnits n{1, "km"};
-//     ifstream u_file(UNIT_FILE_PATH);
-//     n.read_units(u_file);
-//     return 0;
-// }
+int main(void){
+    ariel::NumberWithUnits n{1, "km"};
+    ifstream u_file(UNIT_FILE_PATH);
+    n.read_units(u_file);
+    return 0;
+}
