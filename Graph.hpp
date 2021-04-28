@@ -24,5 +24,7 @@ namespace zich{
             int remove_edge(std::string src, std::string dst);
 
             int get_size();
+
+            bool has_vertex(std::string key);
     };
 }

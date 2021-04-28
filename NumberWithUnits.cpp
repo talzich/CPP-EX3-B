@@ -9,7 +9,6 @@
 #include <map>
 
 #include "NumberWithUnits.hpp"
-//#include "Graph.hpp"
 #include "Graph.cpp"
 
 using namespace std;
@@ -21,9 +20,13 @@ const int START = 0;
 namespace ariel{
 
     zich::Graph g{};
+    bool read_flag = false;
 
     NumberWithUnits::NumberWithUnits(double num, string unit){
-        
+
+        if(!read_flag) throw("Units file not read yet");
+        //if(num <= 0) __throw_invalid_argument("Number provided non-positive");
+        if(!g.has_vertex(unit))  __throw_invalid_argument("Unit provided not acceptable");
     }
 
     void NumberWithUnits::read_units(ifstream &u_file){
@@ -44,14 +47,16 @@ namespace ariel{
         while(getline(u_file, str)){
             istringstream s_str(str);
             s_str >> rate1 >> u1 >> dummy >> rate2 >> u2;
+
+            g.add_vertex(u1);
+            g.add_vertex(u2);
+
+            g.add_edge(u1, u2, rate2);
+            g.add_edge(u2, u1, 1/rate2);
+
         }
-        
-        g.add_vertex(u1);
-        g.add_vertex(u2);
 
-        g.add_edge(u1, u2, rate2);
-        g.add_edge(u2, u1, 1/rate2);
-
+        read_flag = true;
         u_file.close();
 
     }

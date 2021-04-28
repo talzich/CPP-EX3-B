@@ -15,6 +15,8 @@ using namespace std;
 
 namespace zich{
 
+    // std::map<std::string, std::map<std::string, double> > adj{};
+
     Graph::Graph(){}
 
     Graph::~Graph(){}
@@ -27,6 +29,11 @@ namespace zich{
     }
 
     int Graph::add_edge(string src, string dst, double exc_rate){
+        
+        // if(adj[src][dst] != NULL){
+        //     if (adj[src][dst] != exc_rate) return;
+        // }
+
         adj[src][dst] = exc_rate;
         
         double tmp;
@@ -37,6 +44,10 @@ namespace zich{
         }
 
         return 1;
+    }
+
+    bool Graph::has_vertex(string key){
+        return (adj.count(key) == 1);
     }
     
 }
