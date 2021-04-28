@@ -15,6 +15,9 @@ namespace ariel{
         public:
             NumberWithUnits(double num, std::string unit);
 
+            std::string get_unit();
+            double get_number();
+
             static void read_units(std::ifstream &u_fle);
 
             //-----------------------------

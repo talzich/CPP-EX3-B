@@ -22,11 +22,24 @@ namespace ariel{
     zich::Graph g{};
     bool read_flag = false;
 
+    NumberWithUnits convert(NumberWithUnits num, string dst_unit){
+        
+        return num;
+    }
+
     NumberWithUnits::NumberWithUnits(double num, string unit){
 
         if(!read_flag) throw("Units file not read yet");
         //if(num <= 0) __throw_invalid_argument("Number provided non-positive");
         if(!g.has_vertex(unit))  __throw_invalid_argument("Unit provided not acceptable");
+    }
+
+    double NumberWithUnits::get_number(){
+        return this->number;
+    }
+
+    string NumberWithUnits::get_unit(){
+        return this->unit;
     }
 
     void NumberWithUnits::read_units(ifstream &u_file){
@@ -80,7 +93,9 @@ namespace ariel{
         return *this;
     }
     NumberWithUnits NumberWithUnits::operator+(NumberWithUnits num){
-        return *this;
+        if(this->unit != num.unit){
+            NumberWithUnits converted = convert(num, this->unit);
+        }
     }
     NumberWithUnits NumberWithUnits::operator+=(NumberWithUnits num){
         return *this;
