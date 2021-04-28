@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 #include <map>
 #include <cmath>
 
@@ -93,7 +94,7 @@ namespace ariel{
     //-----------------------------
 
     NumberWithUnits NumberWithUnits::operator-(){
-        return *this;
+        return NumberWithUnits{this->get_number()*(-1), this->get_unit()};
     }
 
     NumberWithUnits NumberWithUnits::operator-(NumberWithUnits num){
@@ -103,6 +104,7 @@ namespace ariel{
         }
         return NumberWithUnits{this->get_number()-num.get_number(), this->get_unit()};
     }
+    
     NumberWithUnits NumberWithUnits::operator-=(NumberWithUnits num){
         *this = *this - num;
         return *this;
@@ -111,6 +113,7 @@ namespace ariel{
     NumberWithUnits NumberWithUnits::operator+(){
         return *this;
     }
+    
     NumberWithUnits NumberWithUnits::operator+(NumberWithUnits num){
         if(this->unit != num.unit){
             NumberWithUnits converted = convert(num, this->unit);
@@ -118,6 +121,7 @@ namespace ariel{
         }
         return NumberWithUnits{num.get_number() + this->get_number(), this->get_unit()};
     }
+    
     NumberWithUnits NumberWithUnits::operator+=(NumberWithUnits num){
         *this = *this + num;
         return *this;
@@ -130,6 +134,7 @@ namespace ariel{
     bool operator!=(NumberWithUnits num1, NumberWithUnits num2){
         return !(num1 == num2);
     }
+
     bool operator==(NumberWithUnits num1, NumberWithUnits num2){
         if(num1.get_unit() != num2.get_unit()){
             NumberWithUnits converted = convert(num2, num1.get_unit());
@@ -142,35 +147,56 @@ namespace ariel{
     }
 
     bool operator<=(NumberWithUnits num1, NumberWithUnits num2){
-        return false;
+        return (num1 < num2 || num1 == num2);
     }
+    
     bool operator>=(NumberWithUnits num1, NumberWithUnits num2){
-        return false;
+        return (num1 > num2 || num1 == num2);
     }
 
     bool operator<(NumberWithUnits num1, NumberWithUnits num2){
-        return false;
+        return (num1 != num2 && !(num1 > num2));
     }
+    
     bool operator>(NumberWithUnits num1, NumberWithUnits num2){
-        return false;
+        if(num1 == num2) return false;
+        if(num1.get_unit() != num2.get_unit()){
+            NumberWithUnits converted = convert(num2, num1.get_unit());
+            double diff = converted.get_number() - num1.get_number();
+            return (diff < EPS);
+        }
+
+        double diff = num2.get_number() - num1.get_number();
+        return (diff < EPS);
     }
 
     //-----------------------------
     // Increment Decrement Operators
     //-----------------------------
 
+
     NumberWithUnits NumberWithUnits::operator--(){
+        this->number--;
         return *this;
     }
+    
+    // Postfix
     NumberWithUnits NumberWithUnits::operator--(int dummy){
-        return *this;
+        NumberWithUnits copy = *this;
+        this->number--;
+        return copy;
     }
 
     NumberWithUnits NumberWithUnits::operator++(){
+        this->number++;
         return *this;
     }
+
+    // Postfix
     NumberWithUnits NumberWithUnits::operator++(int dummy){
-        return *this;
+        NumberWithUnits copy = *this;
+        this->number++;
+        return copy;
     }
 
     //-----------------------------
@@ -178,11 +204,10 @@ namespace ariel{
     //-----------------------------
 
     NumberWithUnits operator*(double d, NumberWithUnits num){
-        return num;
+        return NumberWithUnits{num.get_number()*d, num.get_unit()};
     }
-
     NumberWithUnits operator*(NumberWithUnits num, double d){
-        return num;
+        return NumberWithUnits{num.get_number()*d, num.get_unit()};
     }
 
     //-----------------------------
@@ -192,11 +217,32 @@ namespace ariel{
         out << num.get_number() << '[' << num.get_unit() << ']';
         return out;
     }
-    istream& operator>>(istream &in, NumberWithUnits num){
-        return in;
-    }
-
 }
+istream& ariel::operator>>(istream& is, NumberWithUnits A){
+        string unit;
+        char temp1 = 0;
+        char temp2 = 0;
+        double number = 0;
+        is>>number>>temp1>>unit;
+        if(unit.find(']')!=string::npos)//check if "]" is in the string
+        {
+            size_t index = unit.find(']');
+            unit = unit.substr(0,index);
+        }
+        else{
+            is>>temp2;
+        } 
+        if(g.has_vertex(unit)!=0){
+            A.number = number;
+            A.unit = unit;
+        }
+
+        else{
+            throw invalid_argument {"unidentified unit."};
+        }
+
+        return is;
+    }
 
 // int main(){
 //     //ariel::NumberWithUnits n{1, "km"};
