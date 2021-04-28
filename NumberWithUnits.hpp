@@ -4,7 +4,6 @@
 
 #include <string>
 
-#include "Graph.hpp"
 
 namespace ariel{
 

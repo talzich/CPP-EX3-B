@@ -9,7 +9,8 @@
 #include <map>
 
 #include "NumberWithUnits.hpp"
-#include "Graph.hpp"
+//#include "Graph.hpp"
+#include "Graph.cpp"
 
 using namespace std;
 using namespace zich;

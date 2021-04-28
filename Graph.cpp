@@ -23,6 +23,7 @@ namespace zich{
         if(!adj.count(v)){
             adj[v] = map<string, double>{};
         }
+        return 1;
     }
 
     int Graph::add_edge(string src, string dst, double exc_rate){
@@ -34,6 +35,8 @@ namespace zich{
             adj[src][nei.first] = tmp;
             adj[nei.first][src] = 1/tmp;
         }
+
+        return 1;
     }
     
 }
