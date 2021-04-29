@@ -42,4 +42,8 @@ valgrind: test1
 clean:
 	rm -f *.o test*
 	rm -f StudentTest*.cpp
-	rm *.txt
+	rm -f *.txt
+	rm -f prog
+
+presentation: NumberWithUnits.hpp
+	 clang++ -std=c++2a NumberWithUnits.cpp -o prog

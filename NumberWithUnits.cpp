@@ -245,3 +245,54 @@ namespace ariel{
             return in;
         }
 }
+
+using namespace ariel;
+
+int main(){
+
+    ofstream myfile;
+    myfile.open ("units.txt");
+    myfile << "1 km = 1000 m" << endl;
+    myfile << "1 m = 100 cm" << endl;
+    myfile << "1 kg = 1000 g" << endl;
+    myfile << "1 ton = 1000 kg" << endl;
+    myfile << "1 hour = 60 min" << endl;
+    myfile << "1 min = 60 sec" << endl;
+    myfile << "1 day = 24 hour" << endl;
+    myfile << "1 month = 30 day" << endl;
+    myfile << "1 year = 12 month" << endl;   
+    ifstream units_file{"units.txt"};
+    NumberWithUnits::read_units(units_file);
+    myfile.close(); 
+
+    NumberWithUnits km(1, "km");
+    NumberWithUnits km_from_m(1000, "m");
+    NumberWithUnits km_from_cm(100000, "cm");
+    
+    myfile.open ("units.txt");
+    myfile << "1 cm = 10 mm" << endl;
+    NumberWithUnits::read_units(units_file);
+    myfile.close();
+    
+    
+    NumberWithUnits km_from_mm(1000000, "mm");
+
+    cout << "km: " << km << "\nkm using meters: " << km_from_m << "\nkm using cm: " << km_from_cm << "\nkm using mm: " << km_from_mm << endl << endl;
+    
+    system("read");
+    cout << "And, they are all equal!\nIs km = 1,000,000 mm? " << (km == km_from_mm) << "\nIs km = 100,000 cm? " << (km == km_from_cm) << "\nIs km = 1000 m? " << (km == km_from_m) << endl;
+    cout << "Lets see a conversion!" << endl;
+
+    system("read");
+    NumberWithUnits m_to_km = convert(km_from_m, "km");
+    cout << "1,000 meters are" << m_to_km << endl;
+
+    cout << "However, a cross-dimensional conversion is not available and will throw an exception" << endl;
+    system("read");
+    
+    try{
+        convert(km, "hour");
+    }catch(exception e){
+        cout << e.what() << endl;
+    }
+}
