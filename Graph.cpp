@@ -19,6 +19,7 @@ namespace zich{
 
     Graph::~Graph(){}
 
+    // Adds a vertex to this graph, if not already in it 
     int Graph::add_vertex(string v){
         if(!adj.count(v)){
             adj[v] = map<string, double>{};
@@ -26,14 +27,17 @@ namespace zich{
         return 1;
     }
 
+    // Adds an edge to this graph
     int Graph::add_edge(string src, string dst, double exc_rate){
         adj[src][dst] = exc_rate;
         return 1;
     }
 
+    // Returns true iff a vertex with specified key is in this graph
     bool Graph::has_vertex(string key){
         return (adj.count(key) == 1);
     }
+    
     
     void Graph::notify(string key1, string key2){
         double tmp;
