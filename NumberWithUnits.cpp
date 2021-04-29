@@ -217,25 +217,29 @@ namespace ariel{
         istream& operator>>(istream& in, NumberWithUnits& num){
             
             string unit;
-            char temp1 = 0;
-            char temp2 = 0;
+            char temp1 = 0, temp2 = 0;
             double number = 0;
+
+            // Places each element in its proper place, although, further checks are neccesary
             in>>number>>temp1>>unit;
-            if(unit.find(']')!=string::npos)//check if "]" is in the string
-            {
+
+            // If char ] is in the string unit
+            if(unit.find(']')!=string::npos){
                 size_t index = unit.find(']');
                 unit = unit.substr(0,index);
             }
             else{
                 in>>temp2;
             } 
+
+            // If we already know the unit
             if(g.has_vertex(unit)){
                 num.number = number;
                 num.unit = unit;
             }
 
             else{
-                throw invalid_argument {"unidentified unit."};
+                throw ("Unit specified is unacceptable");
             }
 
             return in;
