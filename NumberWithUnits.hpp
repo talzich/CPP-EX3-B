@@ -13,37 +13,37 @@ namespace ariel{
         std::string unit;
 
         public:
-            NumberWithUnits(double num, std::string unit);
+            NumberWithUnits(double num, const std::string &unit);
 
-            std::string get_unit();
-            double get_number();
+            std::string get_unit() const;
+            double get_number()const;
 
-            static void read_units(std::ifstream &u_fle);
+            static void read_units(std::ifstream &u_file);
 
             //-----------------------------
             // Arithmetic Operators
             //-----------------------------
 
-            NumberWithUnits operator-();
-            NumberWithUnits operator-(NumberWithUnits num);
-            NumberWithUnits operator-=(NumberWithUnits num);
+            NumberWithUnits operator-() const;
+            NumberWithUnits operator-(const NumberWithUnits &num);
+            NumberWithUnits operator-=(const NumberWithUnits&num);
 
-            NumberWithUnits operator+();
-            NumberWithUnits operator+(NumberWithUnits num);
-            NumberWithUnits operator+=(NumberWithUnits num);
+            NumberWithUnits operator+() const;
+            NumberWithUnits operator+(const NumberWithUnits &num);
+            NumberWithUnits operator+=(const NumberWithUnits &num);
 
             //-----------------------------
             // Friend Comparison Operators
             //-----------------------------
 
-            friend bool operator!=(NumberWithUnits num1, NumberWithUnits num2);
-            friend bool operator==(NumberWithUnits num1, NumberWithUnits num2);
+            friend bool operator!=(const NumberWithUnits &num1, const NumberWithUnits &num2);
+            friend bool operator==(const NumberWithUnits &num1, const NumberWithUnits &num2);
 
-            friend bool operator<=(NumberWithUnits num1, NumberWithUnits num2);
-            friend bool operator>=(NumberWithUnits num1, NumberWithUnits num2);
+            friend bool operator<=(const NumberWithUnits &num1, const NumberWithUnits &num2);
+            friend bool operator>=(const NumberWithUnits &num1, const NumberWithUnits &num2);
 
-            friend bool operator<(NumberWithUnits num1, NumberWithUnits num2);
-            friend bool operator>(NumberWithUnits num1, NumberWithUnits num2);
+            friend bool operator<(const NumberWithUnits &num1, const NumberWithUnits &num2);
+            friend bool operator>(const NumberWithUnits &num1, const NumberWithUnits &num2);
 
             //-----------------------------
             // Increment Decrement Operators
@@ -59,14 +59,14 @@ namespace ariel{
             // Friend Operators
             //-----------------------------
 
-            friend NumberWithUnits operator*(double d, NumberWithUnits num);
-            friend NumberWithUnits operator*(NumberWithUnits num, double d);
+            friend NumberWithUnits operator*(double d,const NumberWithUnits &num);
+            friend NumberWithUnits operator*(const NumberWithUnits &num, double d);
             
                 //-----------------------------
                 // I/O Operators
                 //-----------------------------
-            friend std::ostream& operator<<(std::ostream& out, NumberWithUnits num);
-            friend std::istream& operator>>(std::istream& in, NumberWithUnits& num);
+            friend std::ostream& operator<<(std::ostream &out, NumberWithUnits num);
+            friend std::istream& operator>>(std::istream &in, NumberWithUnits &num);
     };
 
 }

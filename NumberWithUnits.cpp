@@ -23,9 +23,8 @@ const double EPS = 0.00001;
 namespace ariel{
 
     zich::Graph g{};
-    bool read_flag = false;
 
-    NumberWithUnits convert(NumberWithUnits num, string dst_unit){
+    NumberWithUnits convert(const NumberWithUnits& num, const string& dst_unit){
         
         // We need to check if units are connected on the graph
         if(!g.is_connected(num.get_unit(), dst_unit)){
@@ -35,20 +34,21 @@ namespace ariel{
         return NumberWithUnits{num.get_number()*g.get_weight(num.get_unit(), dst_unit), dst_unit};
     }
 
-    NumberWithUnits::NumberWithUnits(double num, string unit){
+    NumberWithUnits::NumberWithUnits(double num, const string &unit){
 
-        if(!read_flag) throw("Units file not read yet");
-        if(!g.has_vertex(unit))  throw("Unit provided not acceptable");
+        if(!g.has_vertex(unit)){
+            throw("Unit provided not acceptable");
+        }  
 
         this->number = num;
         this->unit = unit;
     }
 
-    double NumberWithUnits::get_number(){
+    double NumberWithUnits::get_number()const{
         return this->number;
     }
 
-    string NumberWithUnits::get_unit(){
+    string NumberWithUnits::get_unit()const{
         return this->unit;
     }
 
@@ -64,9 +64,8 @@ namespace ariel{
             }
         }
 
-        string u1 = "", u2 = "", dummy = "=";
-        double rate1, rate2;
-        string str = "";
+        string u1, u2, str, dummy = "=";
+        double rate1 = 0, rate2 = 0;
         while(getline(u_file, str)){
             istringstream s_str(str);
             s_str >> rate1 >> u1 >> dummy >> rate2 >> u2;
@@ -82,7 +81,6 @@ namespace ariel{
 
         }
 
-        read_flag = true;
         u_file.close();
 
     }
@@ -91,11 +89,11 @@ namespace ariel{
     // Arithmetic Operators
     //-----------------------------
 
-    NumberWithUnits NumberWithUnits::operator-(){
+    NumberWithUnits NumberWithUnits::operator-() const{
         return NumberWithUnits{this->get_number()*(-1), this->get_unit()};
     }
 
-    NumberWithUnits NumberWithUnits::operator-(NumberWithUnits num){
+    NumberWithUnits NumberWithUnits::operator-(const NumberWithUnits &num){
         if(this->unit != num.unit){
             NumberWithUnits converted = convert(num, this->unit);
             return NumberWithUnits{this->get_number()-converted.get_number(), this->get_unit()};
@@ -103,16 +101,16 @@ namespace ariel{
         return NumberWithUnits{this->get_number()-num.get_number(), this->get_unit()};
     }
     
-    NumberWithUnits NumberWithUnits::operator-=(NumberWithUnits num){
+    NumberWithUnits NumberWithUnits::operator-=(const NumberWithUnits &num){
         *this = *this - num;
         return *this;
     }
 
-    NumberWithUnits NumberWithUnits::operator+(){
+    NumberWithUnits NumberWithUnits::operator+()const{
         return *this;
     }
     
-    NumberWithUnits NumberWithUnits::operator+(NumberWithUnits num){
+    NumberWithUnits NumberWithUnits::operator+(const NumberWithUnits &num){
         if(this->unit != num.unit){
             NumberWithUnits converted = convert(num, this->unit);
             return NumberWithUnits{this->get_number()+converted.get_number(), this->get_unit()};
@@ -120,7 +118,7 @@ namespace ariel{
         return NumberWithUnits{num.get_number() + this->get_number(), this->get_unit()};
     }
     
-    NumberWithUnits NumberWithUnits::operator+=(NumberWithUnits num){
+    NumberWithUnits NumberWithUnits::operator+=(const NumberWithUnits &num){
         *this = *this + num;
         return *this;
     }
@@ -129,11 +127,11 @@ namespace ariel{
     // Comparison Operators
     //-----------------------------
 
-    bool operator!=(NumberWithUnits num1, NumberWithUnits num2){
+    bool operator!=(const NumberWithUnits &num1, const NumberWithUnits &num2){
         return !(num1 == num2);
     }
 
-    bool operator==(NumberWithUnits num1, NumberWithUnits num2){
+    bool operator==(const NumberWithUnits& num1, const NumberWithUnits& num2){
         if(num1.get_unit() != num2.get_unit()){
             NumberWithUnits converted = convert(num2, num1.get_unit());
             double diff = abs(converted.get_number() - num1.get_number());
@@ -144,20 +142,22 @@ namespace ariel{
         return (diff < EPS);
     }
 
-    bool operator<=(NumberWithUnits num1, NumberWithUnits num2){
+    bool operator<=(const NumberWithUnits& num1, const NumberWithUnits& num2){
         return (num1 < num2 || num1 == num2);
     }
     
-    bool operator>=(NumberWithUnits num1, NumberWithUnits num2){
+    bool operator>=(const NumberWithUnits& num1, const NumberWithUnits& num2){
         return (num1 > num2 || num1 == num2);
     }
 
-    bool operator<(NumberWithUnits num1, NumberWithUnits num2){
+    bool operator<(const NumberWithUnits& num1, const NumberWithUnits& num2){
         return (num1 != num2 && !(num1 > num2));
     }
     
-    bool operator>(NumberWithUnits num1, NumberWithUnits num2){
-        if(num1 == num2) return false;
+    bool operator>(const NumberWithUnits& num1, const NumberWithUnits& num2){
+        if(num1 == num2) {
+            return false;
+        }
         if(num1.get_unit() != num2.get_unit()){
             NumberWithUnits converted = convert(num2, num1.get_unit());
             double diff = converted.get_number() - num1.get_number();
@@ -197,44 +197,44 @@ namespace ariel{
     // Friend Operators
     //-----------------------------
 
-    NumberWithUnits operator*(double d, NumberWithUnits num){
+    NumberWithUnits operator*(double d,const NumberWithUnits &num){
         return NumberWithUnits{num.get_number()*d, num.get_unit()};
     }
-    NumberWithUnits operator*(NumberWithUnits num, double d){
+    NumberWithUnits operator*(const NumberWithUnits &num, double d){
         return NumberWithUnits{num.get_number()*d, num.get_unit()};
     }
 
     //-----------------------------
     // I/O Operators
     //-----------------------------
-    ostream& operator<<(ostream &out, NumberWithUnits num){
+    ostream& operator<<(ostream &out, const NumberWithUnits num){
         out << num.get_number() << '[' << num.get_unit() << ']';
         return out;
     }
 
-    istream& operator>>(istream& is, NumberWithUnits& A){
+    istream& operator>>(istream& in, NumberWithUnits& num){
         string unit;
         char temp1 = 0;
         char temp2 = 0;
         double number = 0;
-        is>>number>>temp1>>unit;
+        in>>number>>temp1>>unit;
         if(unit.find(']')!=string::npos)//check if "]" is in the string
         {
             size_t index = unit.find(']');
             unit = unit.substr(0,index);
         }
         else{
-            is>>temp2;
+            in>>temp2;
         } 
-        if(g.has_vertex(unit)!=0){
-            A.number = number;
-            A.unit = unit;
+        if(g.has_vertex(unit)){
+            num.number = number;
+            num.unit = unit;
         }
 
         else{
             throw invalid_argument {"unidentified unit."};
         }
 
-        return is;
+        return in;
     }
 }
