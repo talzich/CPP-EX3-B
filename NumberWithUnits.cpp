@@ -183,6 +183,7 @@ namespace ariel{
         return NumberWithUnits((this->number)--, this->unit);
     }
 
+
     NumberWithUnits &NumberWithUnits::operator++(){
         ++(this->number);
         return *this;
@@ -213,6 +214,7 @@ namespace ariel{
     }
 
     istream& operator>>(istream& in, NumberWithUnits& num){
+        
         string unit;
         char temp1 = 0;
         char temp2 = 0;
