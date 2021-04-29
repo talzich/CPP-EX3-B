@@ -60,7 +60,7 @@ namespace ariel{
             //-----------------------------
 
             friend NumberWithUnits operator*(double d,const NumberWithUnits &num);
-            friend NumberWithUnits operator*(const NumberWithUnits &num, double d);
+            NumberWithUnits operator*(double d);
             
                 //-----------------------------
                 // I/O Operators

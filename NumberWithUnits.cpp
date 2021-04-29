@@ -123,6 +123,10 @@ namespace ariel{
         return *this;
     }
 
+    NumberWithUnits NumberWithUnits::operator*(double d){
+        return NumberWithUnits{this->get_number()*d, this->get_unit()};
+    }
+    
     //-----------------------------
     // Comparison Operators
     //-----------------------------
@@ -199,9 +203,6 @@ namespace ariel{
     //-----------------------------
 
     NumberWithUnits operator*(double d,const NumberWithUnits &num){
-        return NumberWithUnits{num.get_number()*d, num.get_unit()};
-    }
-    NumberWithUnits operator*(const NumberWithUnits &num, double d){
         return NumberWithUnits{num.get_number()*d, num.get_unit()};
     }
 

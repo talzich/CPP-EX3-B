@@ -42,3 +42,4 @@ valgrind: test1
 clean:
 	rm -f *.o test*
 	rm -f StudentTest*.cpp
+	rm *.txt
