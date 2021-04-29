@@ -123,7 +123,7 @@ namespace ariel{
         return *this;
     }
 
-    NumberWithUnits NumberWithUnits::operator*(double d){
+    NumberWithUnits NumberWithUnits::operator*(double d) const{
         return NumberWithUnits{this->get_number()*d, this->get_unit()};
     }
     
@@ -131,44 +131,41 @@ namespace ariel{
     // Comparison Operators
     //-----------------------------
 
-    bool operator!=(const NumberWithUnits &num1, const NumberWithUnits &num2){
-        return !(num1 == num2);
+    bool NumberWithUnits::operator!=(const NumberWithUnits &other) const{
+        return !(*this == other);
     }
-
-    bool operator==(const NumberWithUnits& num1, const NumberWithUnits& num2){
-        if(num1.get_unit() != num2.get_unit()){
-            NumberWithUnits converted = convert(num2, num1.get_unit());
-            double diff = abs(converted.get_number() - num1.get_number());
+    bool NumberWithUnits::operator==(const NumberWithUnits &other) const{
+        if(this->get_unit() != other.get_unit()){
+            NumberWithUnits converted = convert(other, this->get_unit());
+            double diff = abs(converted.get_number() - this->get_number());
             return (diff < EPS);
         }
 
-        double diff = abs(num2.get_number() - num1.get_number());
+        double diff = abs(other.get_number() - this->get_number());
         return (diff < EPS);
     }
 
-    bool operator<=(const NumberWithUnits& num1, const NumberWithUnits& num2){
-        return (num1 < num2 || num1 == num2);
+    bool NumberWithUnits::operator<=(const NumberWithUnits &other) const{
+        return (*this < other || *this == other);
     }
-    
-    bool operator>=(const NumberWithUnits& num1, const NumberWithUnits& num2){
-        return (num1 > num2 || num1 == num2);
+    bool NumberWithUnits::operator>=(const NumberWithUnits &other) const{
+         return (*this > other || *this == other);
     }
 
-    bool operator<(const NumberWithUnits& num1, const NumberWithUnits& num2){
-        return (num1 != num2 && !(num1 > num2));
+    bool NumberWithUnits::operator<(const NumberWithUnits &other) const{
+        return (*this != other && !(*this > other));
     }
-    
-    bool operator>(const NumberWithUnits& num1, const NumberWithUnits& num2){
-        if(num1 == num2) {
+    bool NumberWithUnits::operator>(const NumberWithUnits &other) const{
+        if(*this == other) {
             return false;
         }
-        if(num1.get_unit() != num2.get_unit()){
-            NumberWithUnits converted = convert(num2, num1.get_unit());
-            double diff = converted.get_number() - num1.get_number();
+        if(this->get_unit() != other.get_unit()){
+            NumberWithUnits converted = convert(other, this->get_unit());
+            double diff = converted.get_number() - this->get_number();
             return (diff < EPS);
         }
 
-        double diff = num2.get_number() - num1.get_number();
+        double diff = other.get_number() - this->get_number();
         return (diff < EPS);
     }
 
@@ -202,42 +199,45 @@ namespace ariel{
     // Friend Operators
     //-----------------------------
 
-    NumberWithUnits operator*(double d,const NumberWithUnits &num){
-        return NumberWithUnits{num.get_number()*d, num.get_unit()};
-    }
-
-    //-----------------------------
-    // I/O Operators
-    //-----------------------------
-    ostream& operator<<(ostream &out, const NumberWithUnits num){
-        out << num.get_number() << '[' << num.get_unit() << ']';
-        return out;
-    }
-
-    istream& operator>>(istream& in, NumberWithUnits& num){
-        
-        string unit;
-        char temp1 = 0;
-        char temp2 = 0;
-        double number = 0;
-        in>>number>>temp1>>unit;
-        if(unit.find(']')!=string::npos)//check if "]" is in the string
-        {
-            size_t index = unit.find(']');
-            unit = unit.substr(0,index);
-        }
-        else{
-            in>>temp2;
-        } 
-        if(g.has_vertex(unit)){
-            num.number = number;
-            num.unit = unit;
+        //-----------------------------
+        // Arithmetic Operators
+        //-----------------------------
+        NumberWithUnits operator*(double d,const NumberWithUnits &num){
+            return NumberWithUnits{num.get_number()*d, num.get_unit()};
         }
 
-        else{
-            throw invalid_argument {"unidentified unit."};
+        //-----------------------------
+        // I/O Operators
+        //-----------------------------
+        ostream& operator<<(ostream &out, const NumberWithUnits num){
+            out << num.get_number() << '[' << num.get_unit() << ']';
+            return out;
         }
 
-        return in;
-    }
+        istream& operator>>(istream& in, NumberWithUnits& num){
+            
+            string unit;
+            char temp1 = 0;
+            char temp2 = 0;
+            double number = 0;
+            in>>number>>temp1>>unit;
+            if(unit.find(']')!=string::npos)//check if "]" is in the string
+            {
+                size_t index = unit.find(']');
+                unit = unit.substr(0,index);
+            }
+            else{
+                in>>temp2;
+            } 
+            if(g.has_vertex(unit)){
+                num.number = number;
+                num.unit = unit;
+            }
+
+            else{
+                throw invalid_argument {"unidentified unit."};
+            }
+
+            return in;
+        }
 }

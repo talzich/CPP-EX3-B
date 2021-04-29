@@ -32,18 +32,22 @@ namespace ariel{
             NumberWithUnits operator+(const NumberWithUnits &num);
             NumberWithUnits operator+=(const NumberWithUnits &num);
 
+            NumberWithUnits operator*(double d) const;
+
             //-----------------------------
-            // Friend Comparison Operators
+            // Comparison Operators
             //-----------------------------
 
-            friend bool operator!=(const NumberWithUnits &num1, const NumberWithUnits &num2);
-            friend bool operator==(const NumberWithUnits &num1, const NumberWithUnits &num2);
+            bool operator!=(const NumberWithUnits &other) const;
 
-            friend bool operator<=(const NumberWithUnits &num1, const NumberWithUnits &num2);
-            friend bool operator>=(const NumberWithUnits &num1, const NumberWithUnits &num2);
+            bool operator==(const NumberWithUnits &other) const;
 
-            friend bool operator<(const NumberWithUnits &num1, const NumberWithUnits &num2);
-            friend bool operator>(const NumberWithUnits &num1, const NumberWithUnits &num2);
+            bool operator<=(const NumberWithUnits &other) const;
+            bool operator>=(const NumberWithUnits &other) const;
+
+            bool operator<(const NumberWithUnits &other) const;
+            bool operator>(const NumberWithUnits &other) const;
+
 
             //-----------------------------
             // Increment Decrement Operators
@@ -60,7 +64,6 @@ namespace ariel{
             //-----------------------------
 
             friend NumberWithUnits operator*(double d,const NumberWithUnits &num);
-            NumberWithUnits operator*(double d);
             
                 //-----------------------------
                 // I/O Operators
